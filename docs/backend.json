@@ -1,0 +1,221 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Represents a user's profile in the system.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The user's unique ID."
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "The user's email address."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "The user's display name."
+        },
+        "role": {
+          "type": "string",
+          "description": "The role of the user.",
+          "enum": [
+            "Project Manager",
+            "Team Member",
+            "Mentor",
+            "Viewer"
+          ]
+        }
+      },
+      "required": [
+        "uid",
+        "email"
+      ]
+    },
+    "Task": {
+      "title": "Task",
+      "description": "Represents a task in the project management system.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique ID for the task document."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the task."
+        },
+        "description": {
+          "type": "string",
+          "description": "A detailed description of the task."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "To Do",
+            "In Progress",
+            "Done"
+          ],
+          "description": "The current status of the task."
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "The UID of the user who owns the task."
+        }
+      },
+      "required": [
+        "uid",
+        "title",
+        "status"
+      ]
+    },
+    "Event": {
+      "title": "Event",
+      "description": "Represents a calendar event or deadline.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique ID for the event document."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the event."
+        },
+        "start": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The start date and time of the event."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "meeting",
+            "deadline"
+          ],
+          "description": "The type of the event."
+        },
+        "meetingLink": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL for the meeting."
+        }
+      },
+      "required": [
+        "uid",
+        "title",
+        "start",
+        "type"
+      ]
+    },
+    "Repository": {
+      "title": "Repository",
+      "description": "Represents a code repository linked to the project.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique ID for the repository document."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the repository."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the repository."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the repository."
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "The UID of the user who added the repository."
+        }
+      },
+      "required": [
+        "uid",
+        "name",
+        "url",
+        "ownerUid"
+      ]
+    },
+    "Document": {
+      "title": "Document",
+      "description": "Represents a project document.",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The unique ID for the document."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the document."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL where the document is stored."
+        },
+        "ownerUid": {
+          "type": "string",
+          "description": "The UID of the user who owns the document."
+        },
+        "lastModified": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp of when the document was last modified."
+        }
+      },
+      "required": [
+        "uid",
+        "title",
+        "url",
+        "ownerUid",
+        "lastModified"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "google.com"
+    ]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/UserProfile"
+      },
+      "description": "Stores user profile information."
+    },
+    "/tasks/{taskId}": {
+      "schema": {
+        "$ref": "#/entities/Task"
+      },
+      "description": "Stores individual task details."
+    },
+    "/events/{eventId}": {
+      "schema": {
+        "$ref": "#/entities/Event"
+      },
+      "description": "Stores calendar events and deadlines."
+    },
+    "/repositories/{repositoryId}": {
+      "schema": {
+        "$ref": "#/entities/Repository"
+      },
+      "description": "Stores project code repositories."
+    },
+    "/documents/{documentId}": {
+      "schema": {
+        "$ref": "#/entities/Document"
+      },
+      "description": "Stores project documents."
+    }
+  }
+}
